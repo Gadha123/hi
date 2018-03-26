@@ -1,0 +1,27 @@
+declare
+
+      v_year  number(4);
+      v_c     number(2);
+begin
+      select  to_char(hire_date,'yyyy') into v_year
+      from  employee11
+      group by to_char(hire_date,'yyyy')
+      having count(*) = 
+             ( select  max( count(*))
+               from  employee11
+               group by to_char(hire_date,'yyyy'));
+               
+      dbms_output.put_line('Year : ' || v_year);
+
+      for month in 1 .. 12
+      loop
+          select  count(*) into v_c
+          from employee11
+          where  to_char(hire_date,'mm') = month and to_char(hire_date,'yyyy') = v_year;
+          
+          dbms_output.put_line('Month : ' || to_char(month) || ' Employee11 : ' || to_char(v_c));
+
+     end loop;          
+
+end;
+
